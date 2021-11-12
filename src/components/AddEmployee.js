@@ -1,69 +1,42 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, {useState, useContext} from 'react'
+import React from 'react'
 import Menu from './Menu'
-import {Link, useHistory} from 'react-router-dom'
-import { GlobalContext } from '../Context/GlobalState'
+import {Link} from 'react-router-dom'
+import Validation from './Validation';
+import FormVaildation from './FormValidation';
 
 function AddEmployee() {
-    const [employee, setEmployee] = useState({
-        id: 0,
-        firstName: "",
-        lastName: "",
-        emailId: ""
-    });
-    
-    const{employees, addEmployee} = useContext(GlobalContext)
-    const history = useHistory();
-    const[isSubmit, setIsSubmit] = useState(false)
-    
-    const onSubmit = () => {
-        if (employees.length === 0) employees.id=1
-        else employees.id = employees[employees.length -1 ].id + 1
-        const newEmployee = {
-            id: employees.id,
-            firstName: employee.firstName,
-            lastName: employee.lastName,
-            emailId: employee.emailId
-        }
-        addEmployee(newEmployee);
-        history.push('/')
-    }
-
-    const onchangeValue= (e) =>{
-        const {name, value } = e.target
-        setEmployee({
-            ...employee,
-            [name] : value
-        })
-        
-    }
+    const {onchangeValue, employee, handleSubmit, errors} = FormVaildation(Validation);
 
     return(
         
         <div >
             <Menu />
             <div style ={{marginLeft: 300}}>
-                <form style = {{width: 700, marginTop: 50}} onSubmit = {onSubmit}>
+                <form style = {{width: 700, marginTop: 50}} onSubmit = {handleSubmit}>
                    
                     <legend style ={{alignItems: 'center', fontSize: 48, fontWeight: 'bold'}}>Add Employee</legend>
 
                     <div className="form-group">
-                        <label for="exampleInputEmail1">First Name</label>
-                        <input type="text" class="form-control" name="firstName" placeholder="First Name" onChange={onchangeValue}/>
+                        <label >First Name</label>
+                        <input value={employee.firstName} type="text" className="form-control" name="firstName" placeholder="First Name" onChange={onchangeValue}/>
+                        {errors.firstName && <p style={{color: 'red'}}>{errors.firstName}</p>}
                     </div>
                     <div>
-                        <label for="exampleInputEmail1" class="form-label mt-4">Last Name</label>
-                        <input type="text" class="form-control" name="lastName"  placeholder="Last Name" onChange={onchangeValue}/>
+                        <label  className="form-label mt-4">Last Name</label>
+                        <input value={employee.lastName} type="text" className="form-control" name="lastName"  placeholder="Last Name" onChange={onchangeValue}/>
+                        {errors.lastName && <p style={{color: 'red'}}>{errors.lastName}</p>}
                     </div>
                     <div >
-                        <label for="exampleInputEmail1" class="form-label mt-4">Email Id</label>
-                        <input type="email" class="form-control" name="emailId" placeholder="Enter email" onChange={onchangeValue}/>
+                        <label class="form-label mt-4">Email Id</label>
+                        <input value={employee.emailId} type="email" className="form-control" name="emailId" placeholder="Enter email" onChange={onchangeValue}/>
+                        {errors.emailId && <p style={{color: 'red'}}>{errors.emailId}</p>}
                     </div>
                     
                     <br/>
                     <div>
-                    <button style={{margin: 10, width: 150}} type="submit" class="btn btn-primary">Save</button>
-                    <Link style={{margin: 10, width: 150}} class="btn btn-success" to='/'>Cancel</Link>
+                    <button style={{margin: 10, width: 150}} type="submit" className="btn btn-primary">Save</button>
+                    <Link style={{margin: 10, width: 150}} className="btn btn-success" to='/' type="button">Cancel</Link>
                     </div>
                 </form>
             </div>

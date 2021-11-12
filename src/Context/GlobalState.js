@@ -1,66 +1,92 @@
-import React, {createContext, useReducer} from 'react'
+import React, {createContext, useReducer, useEffect, useState} from 'react'
 import AppReducer from './AppReducer'
-
+import axios from 'axios'
 
 
 const initialState = {
-    employees:[{
-        id: 1,
-        firstName: "Wynne",
-        lastName: "Tran",
-        emailId: "wynne.tran@georgebrown.ca"
-    },
-    {
-        id: 2,
-        firstName: "Pritesh",
-        lastName: "Patel",
-        emailId: "myfavoriteProfessor@georgebrown,ca"
-    },
-    {
-        id: 3,
-        firstName: "Thi Hoang Tram",
-        lastName: "Tran",
-        emailId: "thihoangtram.tran@georgebrown.ca"
-    }
-]
+    employees: []
 }
-export const GlobalContext = createContext(initialState)
+
+function popularData(datas){
+    datas.map(data => initialState.employees.push(data))
+}
 
 // Provider Component
 export const GlobalProvider = ({children}) => {
-    const [state, dispatch] = useReducer(AppReducer, initialState);
 
+    const getData = '/api/v1/employees';
+
+    const [new_employees, setEmployees] = useState([])
+
+    useEffect(() => {
+        const fetchData = async () =>{
+            try{
+                const request = await axios.get(getData);
+                setEmployees(request.data.content)
+            }
+            catch(error){
+                console.log(error)
+            }
+        }
+        fetchData();
+    }, []);
+
+    
+    console.log(initialState.employees)
+    //popularData(new_employees)
+   initialState.employees=new_employees
+    const [state, dispatch] = useReducer(AppReducer, initialState);
+    
     //actions
     const removeEmployee = (id) => {
-        dispatch({
+        axios.delete(`/api/v1/employees/${id}`)
+        .then(res => dispatch({
             type: 'Remove_employee',
             payload: id
-        })
+        }))
+        
     }
 
     const addEmployee = (employee) => {
-        dispatch({
+        axios.post('/api/v1/employees', employee,)
+        .then(res => dispatch({
             type: 'Add_employee',
-            payload: employee
+            payload: res.data.content
         })
+        ).then(window.location = "/")
+        .catch(e => console.log(e))
     } 
 
+    const viewEmployee = (id) => {
+        axios.get(`/api/v1/employees/${id}`)
+        .then(res => dispatch({
+            type: 'View_employee',
+            payload: id
+        }))
+    }  
+    
+
     const editEmployee = (employee) => {
-        dispatch({
+        axios.put(`/api/v1/employees/${employee._id}`, employee)
+        .then(res => dispatch({
             type: 'Edit_employee',
             payload: employee
-        })
-    } 
+        }))
+        .then(window.location = "/")
+    }  
     return(
         <GlobalContext.Provider value = {{
             employees: state.employees,
             removeEmployee,
             addEmployee,
-            editEmployee
+            editEmployee,
+            
         }}>
         {children}
         </GlobalContext.Provider>
     )
 }
+
+export const GlobalContext = createContext(initialState)
 
 export default GlobalProvider;
