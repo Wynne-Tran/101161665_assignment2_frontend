@@ -5,7 +5,7 @@ import { GlobalContext } from '../Context/GlobalState'
 import Menu from './Menu';
 
 export const EmployeeDetail = (props) => {
-    const { employees, viewEmployee } = useContext(GlobalContext);
+    const { employees} = useContext(GlobalContext);
     
     const currentEmployeeId = props.match.params.id;
     const [selectedEmployee, setSelectedEmployee] = useState({

@@ -36,13 +36,13 @@ function EmployeeList() {
                         <td>{e.emailId}</td>
                         <td style={{alignItems: 'center'}}>
                             <Link style={{marginLeft: 35}} className="btn btn-outline-info" to= {`/view/${e._id}`}> <Icon.Eye /></Link>
-                            <Link style={{marginLeft: 5}} className="btn btn-outline-success" to= {`/${e._id}`} > <Icon.Pencil /></Link>
+                            <Link style={{marginLeft: 5}} className="btn btn-outline-success" to= {`/edit/${e._id}`} > <Icon.Pencil /></Link>
                             <Link style={{marginLeft: 5}} className="btn btn-outline-danger" onClick = {() => removeEmployee(e._id)}> <Icon.Trash /></Link>
                         </td>
                         </tr>)
                     ))
                     }
-                    
+
                 </tbody>
             </Table>
             </div>

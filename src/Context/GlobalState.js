@@ -7,9 +7,6 @@ const initialState = {
     employees: []
 }
 
-function popularData(datas){
-    datas.map(data => initialState.employees.push(data))
-}
 
 // Provider Component
 export const GlobalProvider = ({children}) => {
@@ -31,9 +28,6 @@ export const GlobalProvider = ({children}) => {
         fetchData();
     }, []);
 
-    
-    console.log(initialState.employees)
-    //popularData(new_employees)
    initialState.employees=new_employees
     const [state, dispatch] = useReducer(AppReducer, initialState);
     
@@ -58,7 +52,7 @@ export const GlobalProvider = ({children}) => {
     } 
 
     const viewEmployee = (id) => {
-        axios.get(`/api/v1/employees/${id}`)
+        axios.get(`/api/v1/employees/view/${id}`)
         .then(res => dispatch({
             type: 'View_employee',
             payload: id
@@ -74,12 +68,15 @@ export const GlobalProvider = ({children}) => {
         }))
         .then(window.location = "/")
     }  
+
+
     return(
         <GlobalContext.Provider value = {{
             employees: state.employees,
             removeEmployee,
             addEmployee,
             editEmployee,
+            viewEmployee,
             
         }}>
         {children}
