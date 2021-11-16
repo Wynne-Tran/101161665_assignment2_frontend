@@ -12,7 +12,7 @@ function EmployeeList() {
     return(
         <div >
             <div >
-                <Link style={{marginLeft: 200, marginTop: 80, width: 200}} className="btn btn-warning" to="/add" ><Icon.Plus /> Add Employee</Link>
+                <Link style={{marginLeft: 200, marginTop: 80, width: 200}} className="btn btn-warning" to="/add-employee/_add" ><Icon.Plus /> Add Employee</Link>
             </div>
             <div style ={{marginLeft: 200}}>
             
@@ -35,8 +35,8 @@ function EmployeeList() {
                         <td>{e.lastName}</td>
                         <td>{e.emailId}</td>
                         <td style={{alignItems: 'center'}}>
-                            <Link style={{marginLeft: 35}} className="btn btn-outline-info" to= {`/view/${e._id}`}> <Icon.Eye /></Link>
-                            <Link style={{marginLeft: 5}} className="btn btn-outline-success" to= {`/edit/${e._id}`} > <Icon.Pencil /></Link>
+                            <Link style={{marginLeft: 35}} className="btn btn-outline-info" to= {`/view-employee/${e._id}`}> <Icon.Eye /></Link>
+                            <Link style={{marginLeft: 5}} className="btn btn-outline-success" to= {`/add-employee/${e._id}`} > <Icon.Pencil /></Link>
                             <Link style={{marginLeft: 5}} className="btn btn-outline-danger" onClick = {() => removeEmployee(e._id)}> <Icon.Trash /></Link>
                         </td>
                         </tr>)
